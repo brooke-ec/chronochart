@@ -1,0 +1,37 @@
+{
+	"$schema": "../node_modules/@tauri-apps/cli/schema.json",
+	"build": {
+		"beforeBuildCommand": "pnpm vite build",
+		"beforeDevCommand": "pnpm vite dev",
+		"devPath": "http://localhost:5173",
+		"distDir": "../build"
+	},
+	"package": {
+		"productName": "chronochart",
+		"version": "0.1.0"
+	},
+	"tauri": {
+		"allowlist": {
+			"all": false
+		},
+		"bundle": {
+			"active": false,
+			"identifier": ""
+		},
+		"security": {
+			"csp": null
+		},
+		"updater": {
+			"active": false
+		},
+		"windows": [
+			{
+				"fullscreen": false,
+				"height": 600,
+				"resizable": true,
+				"title": "Chronochart",
+				"width": 800
+			}
+		]
+	}
+}
