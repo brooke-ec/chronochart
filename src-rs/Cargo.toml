@@ -15,12 +15,25 @@ rust-version = "1.60"
 tauri-build = { version = "1.5.1", features = [] }
 
 [dependencies]
-serde_json = "1.0"
+tauri-specta = { version = "=2.0.0-rc.4", features = ["typescript"] }
+sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite"] }
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.6.1", features = [] }
+specta = "=2.0.0-rc.7"
+parking_lot = "0.12.1"
+serde_json = "1.0"
+eyre = "0.6.12"
+
+[dependencies.uuid]
+version = "1.7.0"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
 # If you use cargo directly instead of tauri's cli you can use this feature flag to switch between tauri's `dev` and `build` modes.
 # DO NOT REMOVE!!
-custom-protocol = [ "tauri/custom-protocol" ]
+custom-protocol = ["tauri/custom-protocol"]

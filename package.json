@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "tauri dev",
-		"build": "tauri build && cargo build --manifest-path=src-rs/Cargo.toml -p cli --release",
+		"build": "tauri build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
@@ -22,5 +22,8 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@tauri-apps/api": "^1.5.3"
+	}
 }
