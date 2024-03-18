@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{fs, path::Path};
 
 use eyre::{bail, Context, ContextCompat, Result};
 use sqlx::{sqlite::SqliteConnectOptions, Row, SqlitePool};
@@ -33,7 +33,7 @@ impl FileHandler {
         wrap_errs!(
             {
                 if create && Path::new(path).is_file() {
-                    bail!("File already exists {}", path);
+                    fs::remove_file(path).wrap_err("Error replacing previous file")?;
                 }
 
                 let options = SqliteConnectOptions::new()
