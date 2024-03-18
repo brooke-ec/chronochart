@@ -8,6 +8,14 @@ try {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async isConnected() : Promise<__Result__<boolean, string[]>> {
+try {
+    return { status: "ok", data: await TAURI_INVOKE("plugin:tauri-specta|is_connected") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 

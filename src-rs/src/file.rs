@@ -50,26 +50,27 @@ impl FileHandler {
                     .await
                     .wrap_err("Failed to execute database migrations")?;
 
-                // Close and replace previous pool
-                async {
-                    let mut old = self.pool.write().await;
-                    match old.as_ref() {
-                        Some(pool) => pool.close().await,
-                        None => (),
-                    }
-
-                    old.replace(pool);
-                }
-                .await;
-
                 if create {
-                    self.set_metadata("application", APPLICATION_NAME).await?
+                    set_metadata(&pool, "application", APPLICATION_NAME).await?
                 }
+
+                // Close and replace previous pool
+                let mut old = self.pool.write().await;
+                match old.as_ref() {
+                    Some(pool) => pool.close().await,
+                    None => (),
+                }
+
+                old.replace(pool);
             },
             format!("Could not connect to file '{}'", path)
         )?;
 
         return Ok(());
+    }
+
+    pub async fn is_connected(&self) -> bool {
+        return self.pool.read().await.is_some();
     }
 
     pub async fn get_metadata(&self, key: &str) -> Result<String> {
@@ -81,16 +82,21 @@ impl FileHandler {
 
     pub async fn set_metadata(&self, key: &str, value: &str) -> Result<()> {
         wrap_errs!(
-            sqlx::query("INSERT OR REPLACE INTO [metadata] ([key], [value]) VALUES (?, ?)")
-                .bind(key)
-                .bind(value)
-                .execute(get_pool!(self))
-                .await?,
+            set_metadata(get_pool!(self), key, value).await?,
             format!("Error setting metadata '{}' to '{}'", key, value)
         )?;
 
         return Ok(());
     }
+}
+
+async fn set_metadata(pool: &SqlitePool, key: &str, value: &str) -> Result<()> {
+    sqlx::query("INSERT OR REPLACE INTO [metadata] ([key], [value]) VALUES (?, ?)")
+        .bind(key)
+        .bind(value)
+        .execute(pool)
+        .await?;
+    return Ok(());
 }
 
 async fn get_metadata(pool: &SqlitePool, key: &str) -> Result<String> {

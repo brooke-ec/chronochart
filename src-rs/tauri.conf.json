@@ -8,7 +8,7 @@
 	},
 	"package": {
 		"productName": "chronochart",
-		"version": "0.1.0"
+		"version": "../package.json"
 	},
 	"tauri": {
 		"allowlist": {
@@ -32,8 +32,10 @@
 				"fullscreen": false,
 				"height": 600,
 				"resizable": true,
-				"title": "Chronochart",
-				"width": 800
+				"title": "chronochart",
+				"width": 800,
+				"minHeight": 400,
+				"minWidth": 400
 			}
 		]
 	}

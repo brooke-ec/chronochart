@@ -9,7 +9,8 @@ use tauri::State;
 use util::{StrResult, StringifyResult};
 
 fn main() {
-    let specta = tauri_specta::ts::builder().commands(tauri_specta::collect_commands![connect]);
+    let specta = tauri_specta::ts::builder()
+        .commands(tauri_specta::collect_commands![connect, is_connected]);
 
     #[cfg(debug_assertions)]
     let specta = specta.path("../src/lib/specta.ts");
@@ -26,4 +27,10 @@ fn main() {
 async fn connect(file: State<'_, FileHandler>, path: &str, create: bool) -> StrResult<()> {
     file.connect(path, create).await.stringify()?;
     return Ok(());
+}
+
+#[tauri::command]
+#[specta::specta]
+async fn is_connected(file: State<'_, FileHandler>) -> StrResult<bool> {
+    return Ok(file.is_connected().await);
 }

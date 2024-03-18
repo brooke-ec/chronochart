@@ -1,0 +1,97 @@
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+
+$colorsets: (
+	"bg": (
+		"dark": (
+			#121212,
+			#1d1d1d,
+			#212121,
+			#242424,
+			#262626,
+			#2c2c2c,
+			#2d2d2d,
+			#323232,
+			#353535,
+			#353535,
+		),
+	),
+	"a": (
+		"green": (
+			#bfc,
+			#65eb87,
+			#35ca5b,
+			#1fac42,
+			#179236,
+		),
+		"red": (
+			#ffbbbb,
+			#ff8888,
+			#e05151,
+			#be3131,
+			#922020,
+		),
+		"blue": (
+			#bfc6ff,
+			#8d94f5,
+			#5a6af5,
+			#3b4acc,
+			#26329e,
+		),
+	),
+);
+
+@each $set-name, $set in $colorsets {
+	@each $palette-name, $palette in $set {
+		.#{$set-name}-#{$palette-name} {
+			@for $i from 1 through length($palette) {
+				--#{$i - 1}#{$set-name}: #{nth($palette, $i)};
+			}
+		}
+	}
+}
+
+:root {
+	@extend .bg-dark;
+	@extend .a-green;
+
+	background-color: var(--3bg);
+	color: white;
+}
+
+a[href] {
+	color: var(--01a);
+
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:active {
+		color: var(--0a);
+	}
+}
+
+button {
+	transition: background-color 150ms;
+	background-color: var(--2a);
+	border-radius: 5px;
+	user-select: none;
+	font-weight: bold;
+	color: white;
+	padding: 7px;
+	border: none;
+
+	&:hover {
+		background-color: var(--3a);
+	}
+
+	&:active {
+		background-color: var(--4a);
+	}
+}
+
+.minor {
+	color: #fff7;
+	font-size: 14px;
+}
