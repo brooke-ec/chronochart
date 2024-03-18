@@ -23,7 +23,7 @@ fn main() {
 
 #[tauri::command]
 #[specta::specta]
-async fn connect(file: State<'_, FileHandler>) -> StrResult<()> {
-    file.connect("../example.db", true).await.stringify()?;
+async fn connect(file: State<'_, FileHandler>, path: &str, create: bool) -> StrResult<()> {
+    file.connect(path, create).await.stringify()?;
     return Ok(());
 }

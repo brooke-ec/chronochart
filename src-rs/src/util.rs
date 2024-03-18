@@ -1,3 +1,10 @@
+#[macro_export]
+macro_rules! wrap_errs {
+    ( $e:expr, $m:expr ) => {
+        async { Ok($e) }.await.wrap_err_with(|| $m)
+    };
+}
+
 pub type StrResult<T, E = Vec<String>> = core::result::Result<T, E>;
 
 pub trait StringifyResult<T> {
