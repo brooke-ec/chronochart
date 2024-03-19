@@ -22,22 +22,25 @@ $colorsets: (
 			#bfc,
 			#65eb87,
 			#35ca5b,
-			#1fac42,
-			#179236,
+			#31b358,
+			#279447,
+			#20773a,
 		),
 		"red": (
 			#ffbbbb,
 			#ff8888,
 			#e05151,
-			#be3131,
-			#922020,
+			#af3939,
+			#912e2e,
+			#722525,
 		),
 		"blue": (
 			#bfc6ff,
 			#8d94f5,
-			#5a6af5,
-			#3b4acc,
-			#26329e,
+			#6170f1,
+			#434fbd,
+			#384191,
+			#282f6b,
 		),
 	),
 );
@@ -94,7 +97,7 @@ a[href]:not(.button) {
 a.button[href],
 button:not(.href) {
 	transition: background-color 150ms;
-	background-color: var(--2a);
+	background-color: var(--3a);
 	border-radius: 5px;
 	user-select: none;
 	font-weight: bold;
@@ -102,11 +105,11 @@ button:not(.href) {
 	padding: 7px;
 
 	&:hover {
-		background-color: var(--3a);
+		background-color: var(--4a);
 	}
 
 	&:active {
-		background-color: var(--4a);
+		background-color: var(--5a);
 	}
 }
 

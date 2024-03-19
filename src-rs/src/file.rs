@@ -11,7 +11,7 @@ const APPLICATION_NAME: &str = "chronochart";
 macro_rules! get_pool {
     ($self:ident) => {
         match $self.pool.read().await.as_ref() {
-            None => bail!("No project file is currently open"),
+            None => bail!("No project file is currently open."),
             Some(pool) => pool,
         }
     };
@@ -33,7 +33,8 @@ impl FileHandler {
         wrap_errs!(
             {
                 if create && Path::new(path).is_file() {
-                    fs::remove_file(path).wrap_err("Error replacing previous file")?;
+                    fs::remove_file(path)
+                        .wrap_err("There was an error removing the previous file.")?;
                 }
 
                 let options = SqliteConnectOptions::new()
@@ -42,13 +43,13 @@ impl FileHandler {
                 let pool = SqlitePool::connect_with(options).await?;
 
                 if !create && get_metadata(&pool, "application").await? != APPLICATION_NAME {
-                    bail!("File is not a chronochart project file");
+                    bail!("File is not a chronochart project file.");
                 }
 
                 sqlx::migrate!()
                     .run(&pool)
                     .await
-                    .wrap_err("Failed to execute database migrations")?;
+                    .wrap_err("Failed to execute database migrations.")?;
 
                 if create {
                     set_metadata(&pool, "application", APPLICATION_NAME).await?

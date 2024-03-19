@@ -35,6 +35,7 @@
 	} = createToaster<ToastData>({ closeDelay: 10000 });
 
 	export const addToast = helpers.addToast;
+	export const removeToast = helpers.removeToast;
 
 	function getInfo(data: ToastData): ToastInfo {
 		const type = TYPES[data.type];
@@ -50,7 +51,7 @@
 
 <div class="container">
 	{#each $toasts as toast (toast.id)}
-		<div animate:flip={{ duration: 150 }}>
+		<div animate:flip={{ duration: 250 }}>
 			<Toast {toast} {elements} info={getInfo(toast.data)} />
 		</div>
 	{/each}

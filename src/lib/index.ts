@@ -2,7 +2,7 @@ import { addToast } from "./component/toast/Toaster.svelte";
 import { open, save } from "@tauri-apps/api/dialog";
 import { commands } from "$lib/specta";
 
-const PROJECT_FILTER = { name: "Chronochart Project", extensions: ["crc"] };
+const PROJECT_FILTER = { name: "Chronochart Project", extensions: ["cro"] };
 
 export function display_error(description: string, details?: string[] | string) {
 	console.error([description, ...(details ? details : [])].join("\n• "));
@@ -25,7 +25,7 @@ export async function open_project() {
 	});
 
 	const error = await connect_file(selected, false);
-	if (error) display_error("Failed to open project file", error);
+	if (error) display_error("Failed to open project file.", error);
 }
 
 export async function new_project() {
@@ -35,5 +35,5 @@ export async function new_project() {
 	});
 
 	const error = await connect_file(selected, true);
-	if (error) display_error("Failed to create new project", error);
+	if (error) display_error("Failed to create new project.", error);
 }
