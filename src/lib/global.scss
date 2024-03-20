@@ -1,6 +1,15 @@
-@use "sass:color";
 @use "sass:list";
 @use "sass:map";
+
+@font-face {
+	font-family: "Inter";
+	src: url("$lib/asset/font/inter/Inter.ttf");
+}
+
+@font-face {
+	font-family: "DejaVu Sans Mono";
+	src: url("$lib/asset/font/dejavu/DejaVuSansMono.woff");
+}
 
 $colorsets: (
 	"bg": (
@@ -55,10 +64,11 @@ $colorsets: (
 	}
 }
 
-:root {
+body {
 	@extend .bg-dark;
 	@extend .a-green;
 
+	font-family: "Inter", sans-serif;
 	background-color: var(--3bg);
 	color: white;
 }

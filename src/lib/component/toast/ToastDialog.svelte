@@ -16,11 +16,14 @@
 
 <style lang="scss">
 	ul {
+		font-family: "DejaVu Sans Mono", monospace;
 		background-color: var(--1bg);
 		padding: 10px 10px 10px 30px;
 		flex-direction: column;
+		word-wrap: break-word;
 		border-radius: 5px;
 		margin-top: 15px;
+		font-size: 14px;
 		display: flex;
 		gap: 10px;
 	}
