@@ -72,7 +72,7 @@
 	</div>
 	<div class="content">
 		<h3>
-			<button class="href white close" use:melt={$close(id)} aria-label="close notification">
+			<button class="link white close" use:melt={$close(id)} aria-label="close notification">
 				<Fa icon={faXmark} />
 			</button>
 			<span class="icon"><Fa icon={info.icon} size="0.95x" /></span>
@@ -80,14 +80,14 @@
 		</h3>
 		<p use:melt={$description(id)}>{info.description}</p>
 		{#if info.details}
-			<button class="href details" on:click={openDetails}>More Details</button>
+			<button class="link details" on:click={openDetails}>More Details</button>
 		{/if}
 	</div>
 </div>
 
 <style lang="scss">
 	.progress {
-		background-color: var(--6bg);
+		background-color: var(--7bg);
 		width: 100%;
 		height: 5px;
 
@@ -100,7 +100,7 @@
 
 	.toast {
 		box-shadow: 2px 2px 5px #00000080;
-		background-color: var(--9bg);
+		background-color: var(--6bg);
 		border-radius: 5px;
 		overflow: hidden;
 		margin-top: 5px;

@@ -15,15 +15,13 @@ $colorsets: (
 	"bg": (
 		"dark": (
 			#121212,
-			#1d1d1d,
 			#212121,
-			#242424,
 			#262626,
-			#2c2c2c,
 			#2d2d2d,
-			#323232,
 			#353535,
-			#353535,
+			#383838,
+			#414141,
+			#4e4e4e,
 		),
 	),
 	"a": (
@@ -74,13 +72,15 @@ body {
 }
 
 button {
+	text-align: start;
 	background: none;
+	color: white;
 	border: none;
 	padding: 0;
 }
 
-button.href,
-a[href]:not(.button) {
+button.link,
+a[link]:not(.button) {
 	color: var(--1a);
 
 	&.white {
@@ -104,14 +104,14 @@ a[href]:not(.button) {
 	}
 }
 
-a.button[href],
-button:not(.href) {
+a.button[link],
+button.button {
 	transition: background-color 150ms;
 	background-color: var(--3a);
 	border-radius: 5px;
+	text-align: center;
 	user-select: none;
 	font-weight: bold;
-	color: white;
 	padding: 7px;
 
 	&:hover {
@@ -126,4 +126,9 @@ button:not(.href) {
 .minor {
 	color: #fff7;
 	font-size: 14px;
+}
+
+hr {
+	margin: 5px 5px;
+	color: #ffffff36;
 }

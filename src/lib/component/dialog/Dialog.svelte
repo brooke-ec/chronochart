@@ -34,7 +34,7 @@
 	<div use:melt={$overlay} class="overlay" transition:fade={{ duration: 250, easing: quadOut }} />
 	<div use:melt={$content} class="content a-{$current.color}" transition:scale={{ duration: 250, easing: quadOut }}>
 		<h2>
-			<button use:melt={$close} class="href white close" aria-label="close dialog">
+			<button use:melt={$close} class="link white close" aria-label="close dialog">
 				<Fa icon={faXmark} />
 			</button>
 			<span class="icon"><Fa icon={$current.icon} size="0.95x" /></span>
@@ -57,7 +57,7 @@
 
 	.content {
 		transform: translate(-50%, -50%);
-		background-color: var(--5bg);
+		background-color: var(--4bg);
 		border-radius: 5px;
 		width: max-content;
 		min-width: 350px;

@@ -70,6 +70,16 @@ impl FileHandler {
         return Ok(());
     }
 
+    pub async fn disconnect(&self) {
+        let mut pool = self.pool.write().await;
+        match pool.as_ref() {
+            Some(pool) => pool.close().await,
+            None => (),
+        }
+
+        pool.take();
+    }
+
     pub async fn is_connected(&self) -> bool {
         return self.pool.read().await.is_some();
     }

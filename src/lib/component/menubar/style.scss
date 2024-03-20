@@ -1,0 +1,36 @@
+.menu {
+	text-decoration: none !important;
+	border-radius: 5px;
+	color: #ffffff8e;
+	font-size: 15px;
+	padding: 5px;
+
+	&:hover,
+	&[data-highlighted] {
+		background-color: var(--6bg);
+		color: white;
+	}
+}
+
+.dropdown {
+	box-shadow: 2px 2px 5px #00000080;
+	background-color: var(--7bg);
+	flex-direction: column;
+	border-radius: 5px;
+	font-size: 14px;
+	display: flex;
+	outline: none;
+	padding: 4px;
+	width: 250px;
+	margin: -5px -8px;
+}
+
+.option {
+	padding: 5px 5px 5px 20px;
+	border-radius: 5px;
+	outline: none;
+
+	&[data-highlighted] {
+		background-color: var(--3a);
+	}
+}

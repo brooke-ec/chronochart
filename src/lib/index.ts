@@ -1,6 +1,7 @@
 import { addToast } from "./component/toast/Toaster.svelte";
 import { open, save } from "@tauri-apps/api/dialog";
 import { commands } from "$lib/specta";
+import { goto } from "$app/navigation";
 
 const PROJECT_FILTER = { name: "Chronochart Project", extensions: ["cro"] };
 
@@ -26,6 +27,7 @@ export async function open_project() {
 
 	const error = await connect_file(selected, false);
 	if (error) display_error("Failed to open project file.", error);
+	else await goto("/project/timeline", { replaceState: true });
 }
 
 export async function new_project() {
@@ -36,4 +38,11 @@ export async function new_project() {
 
 	const error = await connect_file(selected, true);
 	if (error) display_error("Failed to create new project.", error);
+	else await goto("/project/timeline", { replaceState: true });
+}
+
+export async function close_project() {
+	const result = await commands.disconnect();
+	if (result.status == "error") display_error("Failed to close project.");
+	else await goto("/", { replaceState: true });
 }
