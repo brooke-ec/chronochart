@@ -32,4 +32,8 @@
 	&[data-highlighted] {
 		background-color: var(--3a);
 	}
+
+	&[data-disabled] {
+		color: #ffffff85;
+	}
 }

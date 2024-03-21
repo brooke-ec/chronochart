@@ -2,6 +2,7 @@
 	import { closeProject, newProject, openProject } from "$lib";
 	import type { MenuBuilder } from "./Titlebar.svelte";
 	import { melt } from "@melt-ui/svelte";
+	import { page } from "$app/stores";
 
 	export let createMenu: MenuBuilder;
 
@@ -15,7 +16,9 @@
 	<button use:item class="option" on:click={openProject}>Open Project...</button>
 	<button use:item class="option" on:click={newProject}>New Project...</button>
 	<hr />
-	<button use:item class="option" on:click={closeProject}>Close Project</button>
+	<button use:item class="option" data-disabled={$page.url.pathname == "/" ? true : null} on:click={closeProject}>
+		Close Project
+	</button>
 </div>
 
 <style lang="scss">
