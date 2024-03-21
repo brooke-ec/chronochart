@@ -1,6 +1,7 @@
 <script lang="ts" context="module">
-	import { faWindowMaximize, faWindowMinimize, faWindowRestore, faXmark } from "@fortawesome/free-solid-svg-icons";
+	import { faWindowMinimize, faWindowRestore, faXmark } from "@fortawesome/free-solid-svg-icons";
 	import { createMenubar, melt, type MenubarBuilders } from "@melt-ui/svelte";
+	import { faSquare } from "@fortawesome/free-regular-svg-icons";
 	import { appWindow } from "@tauri-apps/api/window";
 	import ProjectMenu from "./ProjectMenu.svelte";
 	import { onMount } from "svelte";
@@ -18,7 +19,7 @@
 	let draggable: true | null = true;
 	function updateDraggable(e: MouseEvent) {
 		const right = window.innerWidth - e.x;
-		draggable = e.y >= 5 && e.x >= 5 && right > 5 ? true : null;
+		draggable = maximized || (e.y >= 5 && e.x >= 5 && right > 5) ? true : null;
 	}
 
 	let maximized: boolean;
@@ -41,7 +42,7 @@
 			<Fa icon={faWindowMinimize} />
 		</button>
 		<button on:click={() => appWindow.toggleMaximize()}>
-			<Fa icon={maximized ? faWindowRestore : faWindowMaximize} />
+			<Fa icon={maximized ? faWindowRestore : faSquare} />
 		</button>
 		<button class="a-red" on:click={() => appWindow.close()}>
 			<Fa icon={faXmark} size="1.15x" />
@@ -53,6 +54,7 @@
 	.container {
 		background-color: var(--5bg);
 		align-items: center;
+		user-select: none;
 		display: flex;
 		height: 32px;
 		width: 100%;
