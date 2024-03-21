@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { faFileCirclePlus, faFolderOpen } from "@fortawesome/free-solid-svg-icons";
-	import { new_project, open_project } from "$lib";
+	import { newProject, openProject } from "$lib";
 	import { version } from "$app/environment";
 	import Fa from "svelte-fa";
 </script>
 
 <main>
-	<img src="logo.svg" alt="Chronochart Logo" draggable="false" />
+	<img src="/logo.svg" alt="Chronochart Logo" draggable="false" />
 	<h1>chronochart</h1>
 	<div class="controls">
-		<button class="button" on:click={new_project}>
+		<button class="button" on:click={newProject}>
 			<Fa icon={faFileCirclePlus} size="2x" />
 			New Project
 		</button>
-		<button class="button" on:click={open_project}>
+		<button class="button" on:click={openProject}>
 			<Fa icon={faFolderOpen} size="2x" />
 			Open Project
 		</button>
@@ -29,7 +29,7 @@
 		padding-top: 25px;
 		user-select: none;
 		display: flex;
-		height: 100vh;
+		flex-grow: 1;
 		gap: 5px;
 
 		img {

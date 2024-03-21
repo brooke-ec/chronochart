@@ -13,8 +13,9 @@ tauri-build = { version = "1.5.1", features = [] }
 [dependencies]
 tauri-specta = { version = "=2.0.0-rc.4", features = ["typescript"] }
 sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite"] }
-tauri = { version = "1.6.1", features = ["dialog-all"] }
+tauri = { version = "1.6.1", features = ["window-all", "dialog-all"] }
 serde = { version = "1.0", features = ["derive"] }
+window-shadows = "0.2.2"
 specta = "=2.0.0-rc.7"
 serde_json = "1.0"
 tokio = "1.36.0"

@@ -5,7 +5,7 @@ mod file;
 mod util;
 
 use file::FileHandler;
-use tauri::State;
+use tauri::{Manager, State};
 use util::{StrResult, StringifyResult};
 
 fn main() {
@@ -21,6 +21,11 @@ fn main() {
     tauri::Builder::default()
         .manage(FileHandler::new())
         .plugin(specta.into_plugin())
+        .setup(|app| {
+            let window = app.get_window("main").unwrap();
+            window_shadows::set_shadow(&window, true).expect("Unsupported platform.");
+            return Ok(());
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

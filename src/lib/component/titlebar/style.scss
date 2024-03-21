@@ -2,8 +2,8 @@
 	text-decoration: none !important;
 	border-radius: 5px;
 	color: #ffffff8e;
+	padding: 4px 6px;
 	font-size: 15px;
-	padding: 5px;
 
 	&:hover,
 	&[data-highlighted] {
@@ -22,12 +22,11 @@
 	outline: none;
 	padding: 4px;
 	width: 250px;
-	margin: -5px -8px;
 }
 
 .option {
-	padding: 5px 5px 5px 20px;
 	border-radius: 5px;
+	padding: 4px 24px;
 	outline: none;
 
 	&[data-highlighted] {
