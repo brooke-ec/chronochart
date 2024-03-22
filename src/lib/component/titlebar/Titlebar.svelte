@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-	import { faWindowMinimize, faWindowRestore, faXmark } from "@fortawesome/free-solid-svg-icons";
+	import { faSquare, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
+	import { faWindowMinimize, faXmark } from "@fortawesome/free-solid-svg-icons";
 	import { createMenubar, melt, type MenubarBuilders } from "@melt-ui/svelte";
-	import { faSquare } from "@fortawesome/free-regular-svg-icons";
 	import { appWindow } from "@tauri-apps/api/window";
 	import ProjectMenu from "./ProjectMenu.svelte";
 	import { onMount } from "svelte";

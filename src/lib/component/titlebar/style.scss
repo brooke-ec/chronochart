@@ -34,7 +34,8 @@
 		background-color: var(--3a);
 	}
 
-	&[data-disabled] {
+	&[disabled] {
 		color: #ffffff85;
+		cursor: default;
 	}
 }

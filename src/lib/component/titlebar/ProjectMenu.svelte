@@ -16,7 +16,7 @@
 	<button use:item class="option" on:click={openProject}>Open Project...</button>
 	<button use:item class="option" on:click={newProject}>New Project...</button>
 	<hr />
-	<button use:item class="option" data-disabled={$page.url.pathname == "/" ? true : null} on:click={closeProject}>
+	<button use:item class="option" disabled={$page.url.pathname == "/"} on:click={closeProject}>
 		Close Project
 	</button>
 </div>
