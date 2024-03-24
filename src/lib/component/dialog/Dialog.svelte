@@ -18,7 +18,7 @@
 	const {
 		elements: { overlay, content, title, close },
 		states: { open },
-	} = createDialog();
+	} = createDialog({ closeOnOutsideClick: false });
 
 	const current = writable<DialogProps<Record<string, any>>>();
 
@@ -31,7 +31,14 @@
 </script>
 
 {#if $open}
-	<div use:melt={$overlay} class="overlay" transition:fade={{ duration: 250, easing: quadOut }} />
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div
+		class="overlay"
+		use:melt={$overlay}
+		on:click={closeDialog}
+		transition:fade={{ duration: 250, easing: quadOut }}
+	/>
+
 	<div use:melt={$content} class="content a-{$current.color}" transition:scale={{ duration: 250, easing: quadOut }}>
 		<h2>
 			<button use:melt={$close} class="link white close" aria-label="close dialog">

@@ -57,6 +57,7 @@
 		user-select: none;
 		display: flex;
 		height: 32px;
+		z-index: 100;
 		width: 100%;
 		top: 0;
 
