@@ -16,10 +16,10 @@ importers:
         version: 6.7.2
       '@melt-ui/pp':
         specifier: ^0.3.0
-        version: 0.3.2(@melt-ui/svelte@0.76.3(svelte@5.39.8))(svelte@5.39.8)
+        version: 0.3.2(@melt-ui/svelte@0.86.6(svelte@5.39.8))(svelte@5.39.8)
       '@melt-ui/svelte':
-        specifier: ^0.76.0
-        version: 0.76.3(svelte@5.39.8)
+        specifier: ^0.86.6
+        version: 0.86.6(svelte@5.39.8)
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
         version: 3.3.1(@sveltejs/kit@2.43.8(@sveltejs/vite-plugin-svelte@4.0.4(svelte@5.39.8)(vite@7.1.9(sass@1.93.2)))(svelte@5.39.8)(vite@7.1.9(sass@1.93.2)))
@@ -267,10 +267,10 @@ packages:
       '@melt-ui/svelte': '>= 0.29.0'
       svelte: ^3.55.0 || ^4.0.0 || ^5.0.0-next.1
 
-  '@melt-ui/svelte@0.76.3':
-    resolution: {integrity: sha512-fEtwHnOVLH0eNwtr+7pX5JQVtOL2XWVFA0/xrNU0yL6NkEpv++4NUwaaulGZC4nVmVG/gIA1JK2fx5M0u01TlA==}
+  '@melt-ui/svelte@0.86.6':
+    resolution: {integrity: sha512-Jer+M7DgIwT5IHfTayb4Iw/fkkxWNmC/mqn/nMh9JrbPbkxmyabfLQnhJ+JDn5HK77f84j34lubO3iqFtYAfMg==}
     peerDependencies:
-      svelte: '>=3 <5'
+      svelte: ^3.0.0 || ^4.0.0 || ^5.0.0-next.118
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -1013,14 +1013,14 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@melt-ui/pp@0.3.2(@melt-ui/svelte@0.76.3(svelte@5.39.8))(svelte@5.39.8)':
+  '@melt-ui/pp@0.3.2(@melt-ui/svelte@0.86.6(svelte@5.39.8))(svelte@5.39.8)':
     dependencies:
-      '@melt-ui/svelte': 0.76.3(svelte@5.39.8)
+      '@melt-ui/svelte': 0.86.6(svelte@5.39.8)
       estree-walker: 3.0.3
       magic-string: 0.30.19
       svelte: 5.39.8
 
-  '@melt-ui/svelte@0.76.3(svelte@5.39.8)':
+  '@melt-ui/svelte@0.86.6(svelte@5.39.8)':
     dependencies:
       '@floating-ui/core': 1.7.3
       '@floating-ui/dom': 1.7.4

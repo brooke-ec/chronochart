@@ -12,7 +12,7 @@
 		"@fortawesome/free-regular-svg-icons": "^6.5.1",
 		"@fortawesome/free-solid-svg-icons": "^6.5.1",
 		"@melt-ui/pp": "^0.3.0",
-		"@melt-ui/svelte": "^0.76.0",
+		"@melt-ui/svelte": "^0.86.6",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.5.27",
