@@ -20,11 +20,9 @@
 	<button use:item class="option" onclick={openProject}>Open Project...</button>
 	<button use:item class="option" onclick={newProject}>New Project...</button>
 	<hr />
-	<button use:item class="option" disabled={$page.url.pathname == "/"} onclick={closeProject}>
-		Close Project
-	</button>
+	<button use:item class="option" disabled={$page.url.pathname == "/"} onclick={closeProject}> Close Project </button>
 </div>
 
 <style lang="scss">
-	@import "./style.scss";
+	@use "./style.scss";
 </style>

@@ -55,8 +55,8 @@ $colorsets: (
 @each $set-name, $set in $colorsets {
 	@each $palette-name, $palette in $set {
 		.#{$set-name}-#{$palette-name} {
-			@for $i from 1 through length($palette) {
-				--#{$i - 1}#{$set-name}: #{nth($palette, $i)};
+			@for $i from 1 through list.length($palette) {
+				--#{$i - 1}#{$set-name}: #{list.nth($palette, $i)};
 			}
 		}
 	}
