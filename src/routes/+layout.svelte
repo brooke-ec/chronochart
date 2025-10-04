@@ -2,11 +2,13 @@
 	import Titlebar from "$lib/component/titlebar/Titlebar.svelte";
 	import Toaster from "$lib/component/toast/Toaster.svelte";
 	import Dialog from "$lib/component/dialog/Dialog.svelte";
+
+	let { children } = $props();
 </script>
 
 <div class="container">
 	<Titlebar />
-	<slot />
+	{@render children()}
 </div>
 
 <Dialog />

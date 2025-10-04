@@ -4,7 +4,11 @@
 	import { melt } from "@melt-ui/svelte";
 	import { page } from "$app/stores";
 
-	export let createMenu: MenuBuilder;
+	interface Props {
+		createMenu: MenuBuilder;
+	}
+
+	let { createMenu }: Props = $props();
 
 	const {
 		elements: { menu, item, trigger },
@@ -13,10 +17,10 @@
 
 <button use:melt={$trigger} class="link menu">Project</button>
 <div use:melt={$menu} class="dropdown">
-	<button use:item class="option" on:click={openProject}>Open Project...</button>
-	<button use:item class="option" on:click={newProject}>New Project...</button>
+	<button use:item class="option" onclick={openProject}>Open Project...</button>
+	<button use:item class="option" onclick={newProject}>New Project...</button>
 	<hr />
-	<button use:item class="option" disabled={$page.url.pathname == "/"} on:click={closeProject}>
+	<button use:item class="option" disabled={$page.url.pathname == "/"} onclick={closeProject}>
 		Close Project
 	</button>
 </div>

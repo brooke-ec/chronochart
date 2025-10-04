@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import { faCircleInfo, faTriangleExclamation, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 	import Toast, { type ToastInfo } from "./Toast.svelte";
 	import { createToaster } from "@melt-ui/svelte";

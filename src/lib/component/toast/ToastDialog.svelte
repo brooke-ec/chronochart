@@ -1,6 +1,9 @@
 <script lang="ts">
-	export let description: string;
-	export let details: string | string[];
+	let { description, details }: Props = $props();
+	interface Props {
+		description: string;
+		details: string | string[];
+	}
 </script>
 
 {#if Array.isArray(details)}

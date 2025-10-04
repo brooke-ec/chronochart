@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import { createProgress, melt, type Toast, type ToastsElements } from "@melt-ui/svelte";
 	import { faXmark, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 	import { openDialog } from "../dialog/Dialog.svelte";
@@ -20,11 +20,13 @@
 </script>
 
 <script lang="ts">
-	export let info: ToastInfo;
-	export let toast: Toast;
-	$: ({ id, getPercentage } = toast);
-	export let elements: ToastsElements;
-	$: ({ content, title, description, close } = elements);
+	interface Props {
+		info: ToastInfo;
+		toast: Toast;
+		elements: ToastsElements;
+	}
+
+	let { info, toast, elements }: Props = $props();
 
 	const percentage = writable(0);
 	const {
@@ -48,17 +50,18 @@
 
 	function openDetails() {
 		removeToast(id);
-		openDialog({
+		openDialog(ToastDialog, {
 			title: info.title + " Details",
-			component: ToastDialog,
 			color: info.color,
 			icon: info.icon,
 			props: {
 				description: info.description,
-				details: info.details,
+				details: info.details ?? [],
 			},
 		});
 	}
+	let { id, getPercentage } = $derived(toast);
+	let { content, title, description, close } = $derived(elements);
 </script>
 
 <div
@@ -68,7 +71,7 @@
 	out:fly={{ duration: 250, x: "100%" }}
 >
 	<div use:melt={$progress} class="progress">
-		<div style={`transform: translateX(-${(100 * ($percentage ?? 0)) / ($max ?? 1)}%)`} />
+		<div style={`transform: translateX(-${(100 * ($percentage ?? 0)) / ($max ?? 1)}%)`}></div>
 	</div>
 	<div class="content">
 		<h3>
@@ -80,7 +83,7 @@
 		</h3>
 		<p use:melt={$description(id)}>{info.description}</p>
 		{#if info.details}
-			<button class="link details" on:click={openDetails}>More Details</button>
+			<button class="link details" onclick={openDetails}>More Details</button>
 		{/if}
 	</div>
 </div>

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	import { faSquare, faWindowRestore } from "@fortawesome/free-regular-svg-icons";
 	import { faWindowMinimize, faXmark } from "@fortawesome/free-solid-svg-icons";
 	import { createMenubar, melt, type MenubarBuilders } from "@melt-ui/svelte";
@@ -16,13 +16,13 @@
 		builders: { createMenu },
 	} = createMenubar();
 
-	let draggable: true | null = true;
+	let draggable: true | null = $state(true);
 	function updateDraggable(e: MouseEvent) {
 		const right = window.innerWidth - e.x;
 		draggable = maximized || (e.y >= 5 && e.x >= 5 && right > 5) ? true : null;
 	}
 
-	let maximized: boolean;
+	let maximized: boolean = $state(false);
 	const updateMaximized = async () => (maximized = await appWindow.isMaximized());
 	appWindow.onResized(updateMaximized);
 	onMount(updateMaximized);
@@ -32,19 +32,19 @@
 	class="container"
 	role="application"
 	use:melt={$menubar}
-	on:mousemove={updateDraggable}
+	onmousemove={updateDraggable}
 	data-tauri-drag-region={draggable}
 >
 	<img src="/logo.svg" alt="Chronochart Logo" draggable="false" />
 	<ProjectMenu {createMenu} />
 	<div class="controls">
-		<button on:click={() => appWindow.minimize()}>
+		<button onclick={() => appWindow.minimize()}>
 			<Fa icon={faWindowMinimize} />
 		</button>
-		<button on:click={() => appWindow.toggleMaximize()}>
+		<button onclick={() => appWindow.toggleMaximize()}>
 			<Fa icon={maximized ? faWindowRestore : faSquare} />
 		</button>
-		<button class="a-red" on:click={() => appWindow.close()}>
+		<button class="a-red" onclick={() => appWindow.close()}>
 			<Fa icon={faXmark} size="1.15x" />
 		</button>
 	</div>

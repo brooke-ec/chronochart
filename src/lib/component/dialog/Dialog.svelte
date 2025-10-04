@@ -1,14 +1,12 @@
-<script lang="ts" context="module">
-	import { faXmark, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
+<script lang="ts" module>
+	import { faExclamation, faXmark, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 	import { createDialog, melt } from "@melt-ui/svelte";
 	import { fade, scale } from "svelte/transition";
-	import { SvelteComponent } from "svelte";
-	import { writable } from "svelte/store";
+	import { type Component } from "svelte";
 	import { quadOut } from "svelte/easing";
 	import Fa from "svelte-fa";
 
-	export type DialogProps<T extends Record<string, any>> = {
-		component: typeof SvelteComponent<T>;
+	export type DialogOptions<T extends Record<string, any>> = {
 		icon: IconDefinition;
 		title: string;
 		color: string;
@@ -20,34 +18,44 @@
 		states: { open },
 	} = createDialog({ closeOnOutsideClick: false });
 
-	const current = writable<DialogProps<Record<string, any>>>();
+	let options = $state<DialogOptions<any>>();
+	let Content = $state<Component<any>>();
 
 	export const closeDialog = () => open.set(false);
-	export function openDialog<T extends Record<string, any>>(config: DialogProps<T>) {
+	export function openDialog<T extends Record<string, any>>(
+		component: Component<T>,
+		opt: DialogOptions<T> = {
+			icon: faExclamation,
+			color: "green",
+			title: "Dialog",
+			props: {} as T,
+		},
+	) {
 		if (open.get()) throw Error("There is already a dialog open");
-		current.set(config);
+		Content = component;
+		options = opt;
 		open.set(true);
 	}
 </script>
 
-{#if $open}
-	<!-- svelte-ignore a11y-no-static-element-interactions -->
+{#if Content && options && $open}
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
 		class="overlay"
 		use:melt={$overlay}
-		on:click={closeDialog}
+		onclick={closeDialog}
 		transition:fade={{ duration: 250, easing: quadOut }}
-	/>
+	></div>
 
-	<div use:melt={$content} class="content a-{$current.color}" transition:scale={{ duration: 250, easing: quadOut }}>
+	<div use:melt={$content} class="content a-{options.color}" transition:scale={{ duration: 250, easing: quadOut }}>
 		<h2>
 			<button use:melt={$close} class="link white close" aria-label="close dialog">
 				<Fa icon={faXmark} />
 			</button>
-			<span class="icon"><Fa icon={$current.icon} size="0.95x" /></span>
-			<span use:melt={$title}>{$current.title}</span>
+			<span class="icon"><Fa icon={options.icon} size="0.95x" /></span>
+			<span use:melt={$title}>{options.title}</span>
 		</h2>
-		<svelte:component this={$current.component} {...$current.props} />
+		<Content {...options.props} />
 	</div>
 {/if}
 

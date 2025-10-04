@@ -9,11 +9,11 @@
 	<img src="/logo.svg" alt="Chronochart Logo" draggable="false" />
 	<h1>chronochart</h1>
 	<div class="controls">
-		<button class="button" on:click={newProject}>
+		<button class="button" onclick={newProject}>
 			<Fa icon={faFileCirclePlus} size="2x" />
 			New Project
 		</button>
-		<button class="button" on:click={openProject}>
+		<button class="button" onclick={openProject}>
 			<Fa icon={faFolderOpen} size="2x" />
 			Open Project
 		</button>
