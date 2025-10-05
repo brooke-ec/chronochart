@@ -1,19 +1,23 @@
 import { addToast } from "./component/toast/Toaster.svelte";
 import { open, save } from "@tauri-apps/api/dialog";
-import { commands } from "$lib/specta";
+import * as bindings from "$lib/bindings";
 import { goto } from "$app/navigation";
 
 const PROJECT_FILTER = { name: "Chronochart Project", extensions: ["cro"] };
 
-export function displayError(description: string, details?: string[] | string) {
-	console.error([description, ...(details ? details : [])].join("\n• "));
-	addToast({ data: { type: "error", description, details } });
-}
+Promise.prototype.display = async function displayError(description: string) {
+	try {
+		return await this;
+	} catch (e) {
+		const details = typeof e === "string" ? [e] : Array.isArray(e) ? e : undefined;
+		addToast({ data: { type: "error", description, details } });
+		throw e;
+	}
+};
 
 async function connectFile(path: string | string[] | null, create: boolean): Promise<string[] | null> {
 	if (path !== null && !Array.isArray(path)) {
-		const result = await commands.connect(path, create);
-		if (result.status == "error") return result.error;
+		await bindings.connect(path, create);
 		await goto("/project/timeline", { replaceState: true });
 	}
 
@@ -26,8 +30,7 @@ export async function openProject() {
 		title: "Open Project",
 	});
 
-	const error = await connectFile(selected, false);
-	if (error) displayError("Failed to open project file.", error);
+	await connectFile(selected, false).display("Failed to open project file.");
 }
 
 export async function newProject() {
@@ -36,12 +39,10 @@ export async function newProject() {
 		title: "New Project",
 	});
 
-	const error = await connectFile(selected, true);
-	if (error) displayError("Failed to create new project.", error);
+	await connectFile(selected, true).display("Failed to create new project.");
 }
 
 export async function closeProject() {
-	const result = await commands.disconnect();
-	if (result.status == "error") displayError("Failed to close project.");
-	else await goto("/", { replaceState: true });
+	await bindings.disconnect().display("Failed to close project.");
+	await goto("/", { replaceState: true });
 }

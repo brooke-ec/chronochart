@@ -10,26 +10,21 @@ use tauri::{Manager, State};
 use util::{StrResult, StringifyResult};
 
 fn main() {
-    let specta = tauri_specta::ts::builder().commands(tauri_specta::collect_commands![
-        is_connected,
-        disconnect,
-        connect,
-        get_timelines
-    ]);
-
-    #[cfg(debug_assertions)]
-    let specta = specta.path("../src/lib/specta.ts");
-
     tauri::Builder::default()
         .manage(FileHandler::new())
-        .plugin(specta.into_plugin())
         .setup(|app| {
             let window = app.get_window("main").unwrap();
             window_shadows::set_shadow(&window, true).expect("Unsupported platform.");
             return Ok(());
         })
+        .invoke_handler(bind_commands![
+            connect,
+            disconnect,
+            is_connected,
+            get_timelines
+        ])
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("Error trying to run tauri application");
 }
 
 #[tauri::command]
