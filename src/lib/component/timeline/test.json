@@ -3,11 +3,13 @@
 		"lines": [
 			{
 				"color": "blue",
-				"connection": null
+				"top": null,
+				"end": true
 			},
 			{
 				"color": "green",
-				"connection": null
+				"top": null,
+				"end": false
 			}
 		],
 		"events": [
@@ -29,11 +31,13 @@
 		"lines": [
 			{
 				"color": "red",
-				"connection": 1
+				"top": { "line": 1, "new": true },
+				"end": true
 			},
 			{
 				"color": "green",
-				"connection": 1
+				"top": { "line": 1, "new": false },
+				"end": true
 			}
 		],
 		"events": [
