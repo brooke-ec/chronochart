@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod file;
+mod model;
 mod util;
 
 use file::FileHandler;
@@ -13,6 +14,7 @@ fn main() {
         is_connected,
         disconnect,
         connect,
+        get_timelines
     ]);
 
     #[cfg(debug_assertions)]
@@ -48,4 +50,10 @@ async fn disconnect(file: State<'_, FileHandler>) -> StrResult<()> {
 #[specta::specta]
 async fn is_connected(file: State<'_, FileHandler>) -> StrResult<bool> {
     return Ok(file.is_connected().await);
+}
+
+#[tauri::command]
+#[specta::specta]
+async fn get_timelines(file: State<'_, FileHandler>) -> StrResult<Vec<model::Timeline>> {
+    return file.get_timelines().await.stringify();
 }

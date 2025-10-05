@@ -1,7 +1,7 @@
 use std::{fs, path::Path};
 
 use eyre::{bail, Context, ContextCompat, Result};
-use sqlx::{sqlite::SqliteConnectOptions, Row, SqlitePool};
+use sqlx::{query_as, sqlite::SqliteConnectOptions, Row, SqlitePool};
 use tokio::sync::RwLock;
 
 use crate::wrap_errs;
@@ -98,6 +98,16 @@ impl FileHandler {
         )?;
 
         return Ok(());
+    }
+
+    pub async fn get_timelines(&self) -> Result<Vec<crate::model::Timeline>> {
+        Ok(query_as!(
+            crate::model::Timeline,
+            "SELECT uuid, title, color FROM timeline"
+        )
+        .fetch_all(get_pool!(self))
+        .await
+        .wrap_err_with(|| format!("Could not get timelines"))?)
     }
 }
 
