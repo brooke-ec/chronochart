@@ -5,13 +5,30 @@ mod file;
 mod model;
 mod util;
 
-use file::FileHandler;
-use tauri::{Manager, State};
+use tauri::Manager;
 use util::{StrResult, StringifyResult};
+
+use crate::file::FILE;
+
+#[macro_export]
+macro_rules! bind_commands {
+    [ $($ident:ident),+ ] => {
+        {
+            // Create or update TypeScript bindings when debugging
+            #[cfg(debug_assertions)]
+            tauri_specta::ts::export(
+                specta::collect_types![$($ident),+],
+                "../src/lib/bindings.ts",
+            ).expect("Failed to export types");
+
+            // Create the Tauri plugin to register commands
+            tauri::generate_handler![$($ident),+]
+        }
+    };
+}
 
 fn main() {
     tauri::Builder::default()
-        .manage(FileHandler::new())
         .setup(|app| {
             let window = app.get_window("main").unwrap();
             window_shadows::set_shadow(&window, true).expect("Unsupported platform.");
@@ -21,7 +38,8 @@ fn main() {
             connect,
             disconnect,
             is_connected,
-            get_timelines
+            get_timelines,
+            get_events
         ])
         .run(tauri::generate_context!())
         .expect("Error trying to run tauri application");
@@ -29,26 +47,32 @@ fn main() {
 
 #[tauri::command]
 #[specta::specta]
-async fn connect(file: State<'_, FileHandler>, path: &str, create: bool) -> StrResult<()> {
-    file.connect(path, create).await.stringify()?;
+async fn connect(path: &str, create: bool) -> StrResult<()> {
+    FILE.connect(path, create).await.stringify()?;
     return Ok(());
 }
 
 #[tauri::command]
 #[specta::specta]
-async fn disconnect(file: State<'_, FileHandler>) -> StrResult<()> {
-    file.disconnect().await;
+async fn disconnect() -> StrResult<()> {
+    FILE.disconnect().await;
     return Ok(());
 }
 
 #[tauri::command]
 #[specta::specta]
-async fn is_connected(file: State<'_, FileHandler>) -> StrResult<bool> {
-    return Ok(file.is_connected().await);
+async fn is_connected() -> StrResult<bool> {
+    return Ok(FILE.is_connected().await);
 }
 
 #[tauri::command]
 #[specta::specta]
-async fn get_timelines(file: State<'_, FileHandler>) -> StrResult<Vec<model::Timeline>> {
-    return file.get_timelines().await.stringify();
+async fn get_timelines() -> StrResult<Vec<model::Timeline>> {
+    return FILE.get_timelines().await.stringify();
+}
+
+#[tauri::command]
+#[specta::specta]
+async fn get_events() -> StrResult<Vec<model::Event>> {
+    return FILE.get_events().await.stringify();
 }

@@ -1,16 +1,18 @@
 use std::{fs, path::Path};
 
 use eyre::{bail, Context, ContextCompat, Result};
-use sqlx::{query_as, sqlite::SqliteConnectOptions, Row, SqlitePool};
+use sqlx::{query, query_as, query_scalar, sqlite::SqliteConnectOptions, Row, SqlitePool};
 use tokio::sync::RwLock;
 
-use crate::wrap_errs;
+use crate::{util::GatherFutures, wrap_errs};
 
 const APPLICATION_NAME: &str = "chronochart";
 
+pub static FILE: FileHandler = FileHandler::const_new();
+
 macro_rules! get_pool {
-    ($self:ident) => {
-        match $self.pool.read().await.as_ref() {
+    () => {
+        match FILE.pool.read().await.as_ref() {
             None => bail!("No project file is currently open."),
             Some(pool) => pool,
         }
@@ -23,9 +25,9 @@ pub struct FileHandler {
 
 impl FileHandler {
     #[inline]
-    pub fn new() -> Self {
+    pub const fn const_new() -> Self {
         return Self {
-            pool: RwLock::new(None),
+            pool: RwLock::const_new(None),
         };
     }
 
@@ -86,14 +88,14 @@ impl FileHandler {
 
     pub async fn get_metadata(&self, key: &str) -> Result<String> {
         return wrap_errs!(
-            get_metadata(get_pool!(self), key).await?,
+            get_metadata(get_pool!(), key).await?,
             format!("Could not get metadata '{}'", key)
         );
     }
 
     pub async fn set_metadata(&self, key: &str, value: &str) -> Result<()> {
         wrap_errs!(
-            set_metadata(get_pool!(self), key, value).await?,
+            set_metadata(get_pool!(), key, value).await?,
             format!("Error setting metadata '{}' to '{}'", key, value)
         )?;
 
@@ -101,13 +103,43 @@ impl FileHandler {
     }
 
     pub async fn get_timelines(&self) -> Result<Vec<crate::model::Timeline>> {
-        Ok(query_as!(
-            crate::model::Timeline,
-            "SELECT uuid, title, color FROM timeline"
-        )
-        .fetch_all(get_pool!(self))
-        .await
-        .wrap_err_with(|| format!("Could not get timelines"))?)
+        Ok(query_as!(crate::model::Timeline, "SELECT * FROM timeline")
+            .fetch_all(get_pool!())
+            .await
+            .wrap_err_with(|| format!("Could not get timelines"))?)
+    }
+
+    pub async fn get_events(&self) -> Result<Vec<crate::model::Event>> {
+        let rows = query!("SELECT * FROM event")
+            .fetch_all(get_pool!())
+            .await
+            .wrap_err_with(|| format!("Could not get events"))?;
+
+        let result = rows
+            .into_iter()
+            .map(async move |r| {
+                let timelines = query_scalar!(
+                    "SELECT timeline_uuid FROM event_timeline WHERE event_uuid = ?",
+                    r.uuid
+                )
+                .fetch_all(get_pool!())
+                .await
+                .wrap_err_with(|| format!("Could not get timelines for event '{}'", r.uuid))?;
+
+                Ok(crate::model::Event {
+                    uuid: r.uuid,
+                    timestamp: r.timestamp as i32,
+                    color: r.color,
+                    title: r.title,
+                    timelines,
+                })
+            })
+            .gather()
+            .await
+            .into_iter()
+            .collect::<Result<Vec<crate::model::Event>>>()?;
+
+        return Ok(result);
     }
 }
 
