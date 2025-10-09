@@ -37,7 +37,7 @@
 		value: percentage,
 	});
 
-	onMount(() => {
+	$effect(() => {
 		let frame: number;
 		const updatePercentage = () => {
 			percentage.set(getPercentage());
