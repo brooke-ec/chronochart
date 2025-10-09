@@ -8,8 +8,6 @@ mod util;
 use tauri::Manager;
 use util::{StrResult, StringifyResult};
 
-use crate::file::FILE;
-
 #[macro_export]
 macro_rules! bind_commands {
     [ $($ident:ident),+ ] => {
@@ -48,31 +46,31 @@ fn main() {
 #[tauri::command]
 #[specta::specta]
 async fn connect(path: &str, create: bool) -> StrResult<()> {
-    FILE.connect(path, create).await.stringify()?;
+    file::connect(path, create).await.stringify()?;
     return Ok(());
 }
 
 #[tauri::command]
 #[specta::specta]
 async fn disconnect() -> StrResult<()> {
-    FILE.disconnect().await;
+    file::disconnect().await;
     return Ok(());
 }
 
 #[tauri::command]
 #[specta::specta]
 async fn is_connected() -> StrResult<bool> {
-    return Ok(FILE.is_connected().await);
+    return Ok(file::is_connected().await);
 }
 
 #[tauri::command]
 #[specta::specta]
 async fn get_timelines() -> StrResult<Vec<model::Timeline>> {
-    return FILE.get_timelines().await.stringify();
+    return file::get_timelines().await.stringify();
 }
 
 #[tauri::command]
 #[specta::specta]
 async fn get_events() -> StrResult<Vec<model::Event>> {
-    return FILE.get_events().await.stringify();
+    return file::get_events().await.stringify();
 }
