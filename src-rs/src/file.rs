@@ -97,7 +97,7 @@ pub async fn get_timelines() -> Result<Vec<crate::model::Timeline>> {
 }
 
 pub async fn get_events() -> Result<Vec<crate::model::Event>> {
-    let rows = query!("SELECT * FROM event")
+    let rows = query!("SELECT * FROM event ORDER BY timestamp ASC")
         .fetch_all(get_pool!())
         .await
         .wrap_err_with(|| format!("Could not get events"))?;

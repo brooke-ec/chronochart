@@ -35,10 +35,12 @@ where
     async fn gather(self) -> Vec<T> {
         let mut set = JoinSet::new();
 
-        for task in self {
-            set.spawn(task);
+        for (i, task) in self.enumerate() {
+            set.spawn(async move { return (i, task.await) });
         }
 
-        return set.join_all().await;
+        let mut results = set.join_all().await;
+        results.sort_by(|a, b| a.0.cmp(&b.0));
+        return results.into_iter().map(|t| t.1).collect();
     }
 }
