@@ -4,7 +4,7 @@ use sqlx::{ConnectOptions, Error};
 #[tokio::main]
 async fn main() {
     // Create database for SQLX compile-time validation
-    let db_path = "../example.db";
+    let db_path = "../example.cro";
     let db_url = format!("sqlite://{}", db_path);
 
     println!("cargo:rustc-env=DATABASE_URL={}", db_url);
