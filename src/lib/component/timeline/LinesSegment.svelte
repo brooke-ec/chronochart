@@ -1,13 +1,15 @@
 <script lang="ts">
-	let { lines } = $props<{ lines: any[] }>();
+	import type { LineSegment } from ".";
+
+	let { lines }: { lines: LineSegment[] } = $props();
 	let width = $derived(lines.length * 4 + (lines.length - 1) * 10);
 </script>
 
 <div class="container">
 	{#each lines as line, j}
 		{#if line.top}
-			{@const start = 2 + line.top.line * 14}
-			{@const gap = (j - line.top.line) * 14}
+			{@const start = 2 + line.top.index * 14}
+			{@const gap = (j - line.top.index) * 14}
 
 			<svg class="a-{line.color}" class:top={!line.top.new} {width} viewBox="0 0 {width} 20">
 				<path stroke-width="4" d="M {start} 0 c 0 14 {gap} 6 {gap} 20" />

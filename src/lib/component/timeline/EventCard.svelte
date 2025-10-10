@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { event, notches } = $props<{ event: { title: string }; notches: number[] }>();
+	let { event, notches }: { event: { title: string }; notches: number[] } = $props();
 </script>
 
 <div style="position: relative;">

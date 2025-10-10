@@ -1,9 +1,11 @@
 <script>
 	import Timeline from "$lib/component/timeline/Timeline.svelte";
+
+	let { data } = $props();
 </script>
 
 <main>
-	<Timeline />
+	<Timeline events={data.events} />
 </main>
 
 <style lang="scss">
