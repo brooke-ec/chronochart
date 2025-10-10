@@ -9,9 +9,21 @@ rust-version = "1.60"
 
 [build-dependencies]
 tauri-build = { version = "1.5.1", features = [] }
+sqlx = { version = "0.7", features = [
+    "runtime-tokio",
+    "sqlite",
+    "macros",
+    "migrate",
+] }
+tokio = { version = "1.47.1", features = ["full"] }
 
 [dependencies]
-sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "macros"] }
+sqlx = { version = "0.7", features = [
+    "runtime-tokio",
+    "sqlite",
+    "macros",
+    "migrate",
+] }
 tauri = { version = "1.6.1", features = ["window-all", "dialog-all"] }
 serde = { version = "1.0", features = ["derive"] }
 window-shadows = "0.2.2"
