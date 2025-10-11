@@ -1,10 +1,12 @@
 <script lang="ts">
-	let { event, notches }: { event: { title: string }; notches: number[] } = $props();
+	import type { EventCard } from ".";
+
+	let { event }: { event: EventCard } = $props();
 </script>
 
 <div style="position: relative;">
-	<div class="pointer" style:--width="{Math.max(...notches)}px">
-		{#each notches as notch}
+	<div class="pointer" style:--width="{Math.max(...event.notches)}px">
+		{#each event.notches as notch}
 			<div class="notch" style:right="{notch}px"></div>
 		{/each}
 	</div>

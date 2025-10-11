@@ -5,7 +5,7 @@
 </script>
 
 <main>
-	<Timeline events={data.events} />
+	<Timeline events={data.events} timelines={data.timelines} />
 </main>
 
 <style lang="scss">

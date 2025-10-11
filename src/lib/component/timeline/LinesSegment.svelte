@@ -2,7 +2,8 @@
 	import type { LineSegment } from ".";
 
 	let { lines }: { lines: LineSegment[] } = $props();
-	let width = $derived(lines.length * 4 + (lines.length - 1) * 10);
+	let length = $derived(Math.max(...lines.map((l) => (l.top ? l.top.index + 1 : 0))));
+	let width = $derived(length * 4 + (length - 1) * 10);
 </script>
 
 <div class="container">
@@ -37,7 +38,6 @@
 	}
 
 	.container {
-		justify-content: center;
 		display: flex;
 		gap: 10px;
 

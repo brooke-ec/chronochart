@@ -6,7 +6,9 @@ export interface LineSegment {
 	end: boolean;
 }
 
+export type EventCard = Event & { notches: number[] };
+
 export interface Segment {
 	lines: LineSegment[];
-	events: (Event & { connections: number[] })[];
+	events: EventCard[];
 }

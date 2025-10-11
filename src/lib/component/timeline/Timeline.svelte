@@ -2,33 +2,49 @@
 	import type { Event, Timeline } from "$lib/bindings";
 	import LinesSegment from "./LinesSegment.svelte";
 	import EventCard from "./EventCard.svelte";
-	import type { LineSegment, Segment } from ".";
-	// import data from "./test.json";
+	import type { Segment } from ".";
 
 	let { events, timelines }: { events: Event[]; timelines: Timeline[] } = $props();
 
 	let segments: Segment[] = $derived.by(() => {
-		let ends = timelines.map((t) => events.findLastIndex((e) => e.timelines.includes(t.uuid)));
+		let ends = timelines.map((timeline) => ({
+			event: events.findLast((e) => e.timelines.includes(timeline.uuid))?.uuid,
+			timeline,
+		}));
 
-		let lines: string[] = [];
+		let starts = timelines.map((timeline) => ({
+			event: events.find((e) => e.timelines.includes(timeline.uuid))?.uuid,
+			timeline,
+		}));
+
+		let lines: Timeline[] = [];
 		let result: Segment[] = [];
+		let ending: string[] = [];
 		for (let event of events) {
-			if (event.timelines.some((t) => !lines.includes(t))) {
-				lines = [...lines, ...event.timelines.filter((t) => !lines.includes(t))];
+			let starting = starts.filter((s) => s.event === event.uuid).map((s) => s.timeline);
+
+			if (starting.length || ending.length) {
+				let previous = lines.map((l) => l.uuid);
+				lines = [...lines, ...starting].filter((l) => !ending.includes(l.uuid));
+
+				ending = ends.filter((e) => e.event === event.uuid).map((e) => e.timeline.uuid);
+
 				result.push({
-					events: [],
-					lines: lines.map((uuid) => {
-						let timeline = timelines.find((t) => t.uuid === uuid);
-						if (!timeline) throw new Error(`Timeline '${uuid}' not found`);
-						return { color: timeline.color, top: null, end: false };
+					lines: lines.map((l) => {
+						let index = previous.indexOf(l.uuid);
+						let top = index >= 0 ? { index, new: false } : null;
+						return { color: l.color, end: ending.includes(l.uuid), top };
 					}),
+					events: [],
 				});
 			}
 
-			let segment = result[result.length - 1];
-			segment.events.push({ ...event, connections: event.timelines.map((t) => lines.indexOf(t)) });
+			result[result.length - 1].events.push({
+				notches: event.timelines.map((t) => 3 + (lines.length - lines.findIndex((l) => l.uuid === t)) * 14),
+				...event,
+			});
 		}
-		// [{ lines: [], events: events.map((e) => ({ ...e, lines: [] })) }]
+
 		return result;
 	});
 </script>
@@ -39,7 +55,7 @@
 			<LinesSegment lines={segment.lines} />
 			<div class="event-container">
 				{#each segment.events as event}
-					<EventCard {event} notches={event.connections.map((l) => 3 + (segment.lines.length - l) * 14)} />
+					<EventCard {event} />
 				{/each}
 			</div>
 		</div>
