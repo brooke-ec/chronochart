@@ -66,6 +66,7 @@
 		position: fixed;
 		height: 100vh;
 		width: 100vw;
+		z-index: 10;
 		left: 0;
 		top: 0;
 	}
@@ -79,6 +80,7 @@
 		max-width: 90vw;
 		position: fixed;
 		padding: 10px;
+		z-index: 11;
 		left: 50%;
 		top: 50%;
 	}
