@@ -10,7 +10,9 @@ CREATE TABLE [timeline] (
   [uuid] TEXT NOT NULL,
   [title] TEXT NOT NULL,
   [color] TEXT NOT NULL,
-   PRIMARY KEY ([uuid])
+  [parent_uuid] TEXT NULL,
+   PRIMARY KEY ([uuid]),
+   FOREIGN KEY ([parent_uuid]) REFERENCES [timeline]([uuid]) ON DELETE SET NULL
 );
 
 -- Setup event table

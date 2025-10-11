@@ -2,7 +2,7 @@
 	import type { LineSegment } from ".";
 
 	let { lines }: { lines: LineSegment[] } = $props();
-	let length = $derived(Math.max(...lines.map((l) => (l.top ? l.top.index + 1 : 0))));
+	let length = $derived(Math.max(lines.length, ...lines.map((l) => (l.top ? l.top.index + 1 : 0))));
 	let width = $derived(length * 4 + (length - 1) * 10);
 </script>
 

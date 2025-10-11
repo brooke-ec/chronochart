@@ -32,7 +32,11 @@
 				result.push({
 					lines: lines.map((l) => {
 						let index = previous.indexOf(l.uuid);
-						let top = index >= 0 ? { index, new: false } : null;
+						let starts = index === -1;
+
+						if (starts && l.parent_uuid) index = previous.indexOf(l.parent_uuid);
+						let top = index === -1 ? null : { index, new: starts };
+
 						return { color: l.color, end: ending.includes(l.uuid), top };
 					}),
 					events: [],

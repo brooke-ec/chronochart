@@ -30,5 +30,5 @@ export function getEvents() {
     return invoke()<Event[]>("get_events")
 }
 
-export type Timeline = { uuid: string; title: string; color: string }
+export type Timeline = { uuid: string; title: string; color: string; parent_uuid: string | null }
 export type Event = { uuid: string; timestamp: number; color: string; title: string; timelines: string[] }

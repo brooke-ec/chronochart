@@ -90,14 +90,16 @@ pub async fn set_metadata(key: &str, value: &str) -> Result<()> {
 }
 
 pub async fn get_timelines() -> Result<Vec<crate::model::Timeline>> {
-    Ok(query_as!(crate::model::Timeline, "SELECT * FROM timeline")
-        .fetch_all(get_pool!())
-        .await
-        .wrap_err_with(|| format!("Could not get timelines"))?)
+    Ok(
+        query_as!(crate::model::Timeline, "SELECT * FROM [timeline]")
+            .fetch_all(get_pool!())
+            .await
+            .wrap_err_with(|| format!("Could not get timelines"))?,
+    )
 }
 
 pub async fn get_events() -> Result<Vec<crate::model::Event>> {
-    let rows = query!("SELECT * FROM event ORDER BY timestamp ASC")
+    let rows = query!("SELECT * FROM [event] ORDER BY [timestamp] ASC")
         .fetch_all(get_pool!())
         .await
         .wrap_err_with(|| format!("Could not get events"))?;
@@ -106,7 +108,7 @@ pub async fn get_events() -> Result<Vec<crate::model::Event>> {
         .into_iter()
         .map(async move |r| {
             let timelines = query_scalar!(
-                "SELECT timeline_uuid FROM event_timeline WHERE event_uuid = ?",
+                "SELECT [timeline_uuid] FROM [event_timeline] WHERE [event_uuid] = ?",
                 r.uuid
             )
             .fetch_all(get_pool!())

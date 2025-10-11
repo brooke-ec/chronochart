@@ -6,6 +6,7 @@ pub struct Timeline {
     pub uuid: String,
     pub title: String,
     pub color: String,
+    pub parent_uuid: Option<String>,
 }
 
 #[derive(Serialize, Type)]
