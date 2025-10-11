@@ -19,15 +19,15 @@ async fn create_db() {
 
     for _ in 0..=1 {
         if let Err::<(), Error>(e) = async { Ok(sqlx::migrate!().run(&mut options.connect().await?).await?) }.await {
-            println!("cargo::warning=Database migration failed: {}, recreating", e);
+            println!("cargo:warning=Database migration failed: {}, recreating", e);
 
             if let Err(e) = std::fs::remove_file(db_path) {
-                println!("cargo::warning=Failed to remove database file: {}", e);
+                println!("cargo:warning=Failed to remove database file: {}", e);
             }
         } else {
             return;
         }
     }
 
-    println!("cargo::error=Failed to create development database after two attempts");
+    println!("cargo:error=Failed to create development database after two attempts");
 }
