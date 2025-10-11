@@ -9,20 +9,19 @@
 
 <div style="position: relative;">
 	<div class="pointer" style:--width="{Math.max(...event.notches)}px">
-		{#each event.notches as notch}
+		{#each [...event.notches, -5] as notch}
 			<div class="notch" style:right="{notch}px"></div>
 		{/each}
 	</div>
 
 	<div class="box">
-		<div class="strip"></div>
 		<div class="markdown-root">{@html DOMPurify.sanitize(marked.parse(event.content, { async: false }))}</div>
 	</div>
 </div>
 
 <style>
 	.pointer {
-		background-color: var(--3a);
+		background-color: var(--4a);
 		position: absolute;
 		height: 4px;
 		top: 16px;
@@ -49,11 +48,6 @@
 		width: fit-content;
 		overflow: hidden;
 		display: flex;
-	}
-
-	.strip {
-		min-width: 5px;
-		background-color: var(--3a);
 	}
 
 	.markdown-root {
