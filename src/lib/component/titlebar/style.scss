@@ -7,8 +7,15 @@
 
 	&:hover,
 	&[data-highlighted] {
-		background-color: var(--6bg);
-		color: white;
+		&:not(.disabled) {
+			background-color: var(--6bg);
+			color: white;
+		}
+	}
+
+	&.disabled {
+		cursor: default;
+		color: #ffffff8e !important;
 	}
 }
 
