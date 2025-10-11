@@ -27,8 +27,6 @@
 				let previous = lines.map((l) => l.uuid);
 				lines = [...lines, ...starting].filter((l) => !ending.includes(l.uuid));
 
-				ending = ends.filter((e) => e.event === event.uuid).map((e) => e.timeline.uuid);
-
 				result.push({
 					lines: lines.map((l) => {
 						let index = previous.indexOf(l.uuid);
@@ -37,11 +35,14 @@
 						if (starts && l.parent_uuid) index = previous.indexOf(l.parent_uuid);
 						let top = index === -1 ? null : { index, new: starts };
 
-						return { color: l.color, end: ending.includes(l.uuid), top };
+						return { color: l.color, end: false, top };
 					}),
 					events: [],
 				});
 			}
+
+			ending = ends.filter((e) => e.event === event.uuid).map((e) => e.timeline.uuid);
+			lines.forEach((l, i) => (result[result.length - 1].lines[i].end = ending.includes(l.uuid)));
 
 			result[result.length - 1].events.push({
 				notches: event.timelines.map((t) => 3 + (lines.length - lines.findIndex((l) => l.uuid === t)) * 14),
