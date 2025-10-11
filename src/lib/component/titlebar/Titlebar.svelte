@@ -57,7 +57,7 @@
 
 <style lang="scss">
 	.container {
-		background-color: var(--5bg);
+		background-color: var(--6bg);
 		align-items: center;
 		user-select: none;
 		display: flex;
@@ -80,13 +80,13 @@
 
 		button {
 			transition: background-color 125ms;
-			background-color: var(--5bg);
+			background-color: transparent;
 			text-align: center;
 			height: 100%;
 			width: 48px;
 
 			&:hover {
-				background-color: var(--6bg);
+				background-color: var(--7bg);
 
 				&:last-child {
 					background-color: var(--2a);
