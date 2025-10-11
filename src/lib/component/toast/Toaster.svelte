@@ -59,6 +59,7 @@
 
 <style lang="scss">
 	.container {
+		z-index: 30;
 		position: fixed;
 		padding: 10px;
 		bottom: 0;

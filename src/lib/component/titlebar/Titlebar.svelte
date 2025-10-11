@@ -11,6 +11,8 @@
 </script>
 
 <script lang="ts">
+	import EventMenu from "./EventMenu.svelte";
+
 	const {
 		elements: { menubar },
 		builders: { createMenu },
@@ -37,6 +39,7 @@
 >
 	<img src="/logo.svg" alt="Chronochart Logo" draggable="false" />
 	<ProjectMenu {createMenu} />
+	<EventMenu {createMenu} />
 	<div class="controls">
 		<button onclick={() => appWindow.minimize()}>
 			<Fa icon={faWindowMinimize} />

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	import { faExclamation, faXmark, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
+	import { faExclamationCircle, faXmark, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 	import { createDialog, melt } from "@melt-ui/svelte";
 	import { fade, scale } from "svelte/transition";
 	import { type Component } from "svelte";
@@ -25,7 +25,7 @@
 	export function openDialog<T extends Record<string, any>>(
 		component: Component<T>,
 		opt: DialogOptions<T> = {
-			icon: faExclamation,
+			icon: faExclamationCircle,
 			color: "green",
 			title: "Dialog",
 			props: {} as T,
