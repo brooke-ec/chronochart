@@ -26,9 +26,7 @@ pub async fn connect(path: &str, create: bool) -> Result<()> {
                 fs::remove_file(path).wrap_err("There was an error removing the previous file.")?;
             }
 
-            let options = SqliteConnectOptions::new()
-                .create_if_missing(create)
-                .filename(path);
+            let options = SqliteConnectOptions::new().create_if_missing(create).filename(path);
             let pool = SqlitePool::connect_with(options).await?;
 
             if !create && get_metadata_raw(&pool, "application").await? != APPLICATION_NAME {
@@ -90,12 +88,10 @@ pub async fn set_metadata(key: &str, value: &str) -> Result<()> {
 }
 
 pub async fn get_timelines() -> Result<Vec<crate::model::Timeline>> {
-    Ok(
-        query_as!(crate::model::Timeline, "SELECT * FROM [timeline]")
-            .fetch_all(get_pool!())
-            .await
-            .wrap_err_with(|| format!("Could not get timelines"))?,
-    )
+    Ok(query_as!(crate::model::Timeline, "SELECT * FROM [timeline]")
+        .fetch_all(get_pool!())
+        .await
+        .wrap_err_with(|| format!("Could not get timelines"))?)
 }
 
 pub async fn get_events() -> Result<Vec<crate::model::Event>> {
@@ -107,19 +103,16 @@ pub async fn get_events() -> Result<Vec<crate::model::Event>> {
     let result = rows
         .into_iter()
         .map(async move |r| {
-            let timelines = query_scalar!(
-                "SELECT [timeline_uuid] FROM [event_timeline] WHERE [event_uuid] = ?",
-                r.uuid
-            )
-            .fetch_all(get_pool!())
-            .await
-            .wrap_err_with(|| format!("Could not get timelines for event '{}'", r.uuid))?;
+            let timelines = query_scalar!("SELECT [timeline_uuid] FROM [event_timeline] WHERE [event_uuid] = ?", r.uuid)
+                .fetch_all(get_pool!())
+                .await
+                .wrap_err_with(|| format!("Could not get timelines for event '{}'", r.uuid))?;
 
             Ok(crate::model::Event {
                 uuid: r.uuid,
                 timestamp: r.timestamp as i32,
                 color: r.color,
-                title: r.title,
+                content: r.content,
                 timelines,
             })
         })
@@ -141,12 +134,10 @@ async fn set_metadata_raw(pool: &SqlitePool, key: &str, value: &str) -> Result<(
 }
 
 async fn get_metadata_raw(pool: &SqlitePool, key: &str) -> Result<String> {
-    Ok(
-        sqlx::query("SELECT [value] FROM [metadata] WHERE [key] = ?")
-            .bind(key)
-            .fetch_optional(pool)
-            .await?
-            .wrap_err_with(|| format!("No metadata with key '{}' exists", key))?
-            .try_get(0)?,
-    )
+    Ok(sqlx::query("SELECT [value] FROM [metadata] WHERE [key] = ?")
+        .bind(key)
+        .fetch_optional(pool)
+        .await?
+        .wrap_err_with(|| format!("No metadata with key '{}' exists", key))?
+        .try_get(0)?)
 }

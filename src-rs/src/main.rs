@@ -32,13 +32,7 @@ fn main() {
             let _ = window_shadows::set_shadow(&window, true);
             return Ok(());
         })
-        .invoke_handler(bind_commands![
-            connect,
-            disconnect,
-            is_connected,
-            get_timelines,
-            get_events
-        ])
+        .invoke_handler(bind_commands![connect, disconnect, is_connected, get_timelines, get_events])
         .run(tauri::generate_context!())
         .expect("Error trying to run tauri application");
 }

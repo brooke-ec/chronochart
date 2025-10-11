@@ -14,6 +14,6 @@ pub struct Event {
     pub uuid: String,
     pub timestamp: i32,
     pub color: String,
-    pub title: String,
+    pub content: String,
     pub timelines: Vec<String>,
 }
