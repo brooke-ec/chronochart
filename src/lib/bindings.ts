@@ -31,4 +31,4 @@ export function getEvents() {
 }
 
 export type Timeline = { uuid: string; title: string; color: string; parent_uuid: string | null }
-export type Event = { uuid: string; timestamp: number; color: string; title: string; timelines: string[] }
+export type Event = { uuid: string; timestamp: number; color: string; content: string; timelines: string[] }

@@ -1,5 +1,8 @@
 <script lang="ts">
-	import type { EventCard } from ".";
+	import type { EventCard } from "..";
+	import DOMPurify from "dompurify";
+	import { marked } from "marked";
+	import "./styles.scss";
 
 	let { event }: { event: EventCard } = $props();
 </script>
@@ -12,10 +15,8 @@
 	</div>
 
 	<div class="box">
-		<div class="title">
-			{event.title}
-		</div>
-		<p>Lorem ipsum</p>
+		<div class="strip"></div>
+		<div class="markdown-root">{@html DOMPurify.sanitize(marked.parse(event.content, { async: false }))}</div>
 	</div>
 </div>
 
@@ -44,17 +45,18 @@
 
 	.box {
 		background-color: var(--1bg);
-		border-radius: 10px;
+		border-radius: 5px;
 		width: fit-content;
 		overflow: hidden;
+		display: flex;
 	}
 
-	.title {
-		padding: 10px;
+	.strip {
+		min-width: 5px;
 		background-color: var(--3a);
 	}
 
-	p {
+	.markdown-root {
 		padding: 10px;
 		font-size: 0.85rem;
 	}

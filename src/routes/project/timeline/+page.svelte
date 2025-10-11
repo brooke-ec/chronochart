@@ -10,6 +10,7 @@
 
 <style lang="scss">
 	main {
+		overflow: hidden auto;
 		padding: 10px 20px;
 	}
 </style>

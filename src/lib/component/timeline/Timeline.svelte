@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Event, Timeline } from "$lib/bindings";
 	import LinesSegment from "./LinesSegment.svelte";
-	import EventCard from "./EventCard.svelte";
+	import EventCard from "./event/EventCard.svelte";
 	import type { Segment } from ".";
 
 	let { events, timelines }: { events: Event[]; timelines: Timeline[] } = $props();

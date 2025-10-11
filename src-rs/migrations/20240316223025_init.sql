@@ -20,7 +20,7 @@ CREATE TABLE [event] (
   [uuid] TEXT NOT NULL,
   [timestamp] INTEGER NOT NULL,
   [color] TEXT NOT NULL,
-  [title] TEXT NOT NULL,
+  [content] TEXT NOT NULL,
    PRIMARY KEY ([uuid])
 );
 
