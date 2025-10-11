@@ -2,6 +2,7 @@ import { addToast } from "./component/toast/Toaster.svelte";
 import { open, save } from "@tauri-apps/api/dialog";
 import * as bindings from "$lib/bindings";
 import { goto } from "$app/navigation";
+import { closeDialog } from "./component/dialog/Dialog.svelte";
 
 const PROJECT_FILTER = { name: "Chronochart Project", extensions: ["cro"] };
 
@@ -19,6 +20,7 @@ async function connectFile(path: string | string[] | null, create: boolean): Pro
 	if (path !== null && !Array.isArray(path)) {
 		await bindings.connect(path, create);
 		await goto("/project/timeline", { replaceState: true });
+		closeDialog();
 	}
 
 	return null;
@@ -45,4 +47,5 @@ export async function newProject() {
 export async function closeProject() {
 	await bindings.disconnect().display("Failed to close project.");
 	await goto("/", { replaceState: true });
+	closeDialog();
 }
