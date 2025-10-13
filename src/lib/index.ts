@@ -19,7 +19,7 @@ Promise.prototype.display = async function displayError(description: string) {
 async function connectFile(path: string | string[] | null, create: boolean): Promise<string[] | null> {
 	if (path !== null && !Array.isArray(path)) {
 		await bindings.connect(path, create);
-		await goto("/project/timeline", { replaceState: true });
+		await goto("/project", { replaceState: true });
 		closeDialog();
 	}
 
