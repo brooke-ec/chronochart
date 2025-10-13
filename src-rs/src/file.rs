@@ -1,7 +1,7 @@
 use std::{fs, path::Path};
 
 use eyre::{bail, Context, ContextCompat, Result};
-use sqlx::{query, query_as, query_scalar, sqlite::SqliteConnectOptions, Row, SqlitePool};
+use sqlx::{query_as, query_scalar, sqlite::SqliteConnectOptions, Row, SqlitePool};
 use tokio::sync::RwLock;
 
 use crate::{util::GatherFutures, wrap_errs};
@@ -94,34 +94,45 @@ pub async fn get_timelines() -> Result<Vec<crate::model::Timeline>> {
         .wrap_err_with(|| format!("Could not get timelines"))?)
 }
 
+pub async fn get_event(uuid: &str) -> Result<crate::model::Event> {
+    let event = query_as!(crate::model::RawEvent, "SELECT * FROM [event] WHERE [uuid] = ?", uuid)
+        .fetch_one(get_pool!())
+        .await
+        .wrap_err_with(|| format!("Could not get event with UUID '{}'", uuid))?;
+
+    return populate_event(event).await;
+}
+
 pub async fn get_events() -> Result<Vec<crate::model::Event>> {
-    let rows = query!("SELECT * FROM [event] ORDER BY [timestamp] ASC")
+    let rows = query_as!(crate::model::RawEvent, "SELECT * FROM [event] ORDER BY [timestamp] ASC")
         .fetch_all(get_pool!())
         .await
         .wrap_err_with(|| format!("Could not get events"))?;
 
     let result = rows
         .into_iter()
-        .map(async move |r| {
-            let timelines = query_scalar!("SELECT [timeline_uuid] FROM [event_timeline] WHERE [event_uuid] = ?", r.uuid)
-                .fetch_all(get_pool!())
-                .await
-                .wrap_err_with(|| format!("Could not get timelines for event '{}'", r.uuid))?;
-
-            Ok(crate::model::Event {
-                uuid: r.uuid,
-                timestamp: r.timestamp as i32,
-                color: r.color,
-                content: r.content,
-                timelines,
-            })
-        })
+        .map(populate_event)
         .gather()
         .await
         .into_iter()
         .collect::<Result<Vec<crate::model::Event>>>()?;
 
     return Ok(result);
+}
+
+async fn populate_event(event: crate::model::RawEvent) -> Result<crate::model::Event> {
+    let timelines = query_scalar!("SELECT [timeline_uuid] FROM [event_timeline] WHERE [event_uuid] = ?", event.uuid)
+        .fetch_all(get_pool!())
+        .await
+        .wrap_err_with(|| format!("Could not get timelines for event '{}'", event.uuid))?;
+
+    Ok(crate::model::Event {
+        uuid: event.uuid,
+        timestamp: event.timestamp,
+        color: event.color,
+        content: event.content,
+        timelines,
+    })
 }
 
 async fn set_metadata_raw(pool: &SqlitePool, key: &str, value: &str) -> Result<()> {

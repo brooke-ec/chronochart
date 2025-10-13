@@ -5,6 +5,7 @@ mod file;
 mod model;
 mod util;
 
+use specta::ts::{BigIntExportBehavior, ExportConfiguration};
 use tauri::Manager;
 use util::{StrResult, StringifyResult};
 
@@ -14,8 +15,9 @@ macro_rules! bind_commands {
         {
             // Create or update TypeScript bindings when debugging
             #[cfg(debug_assertions)]
-            tauri_specta::ts::export(
-                specta::collect_types![$($ident),+],
+            tauri_specta::ts::export_with_cfg(
+                specta::collect_types![$($ident),+].unwrap(),
+                ExportConfiguration::new().bigint(BigIntExportBehavior::BigInt),
                 "../src/lib/bindings.ts",
             ).expect("Failed to export types");
 
@@ -32,7 +34,14 @@ fn main() {
             let _ = window_shadows::set_shadow(&window, true);
             return Ok(());
         })
-        .invoke_handler(bind_commands![connect, disconnect, is_connected, get_timelines, get_events])
+        .invoke_handler(bind_commands![
+            connect,
+            disconnect,
+            is_connected,
+            get_timelines,
+            get_events,
+            get_event
+        ])
         .run(tauri::generate_context!())
         .expect("Error trying to run tauri application");
 }
@@ -67,4 +76,10 @@ async fn get_timelines() -> StrResult<Vec<model::Timeline>> {
 #[specta::specta]
 async fn get_events() -> StrResult<Vec<model::Event>> {
     return file::get_events().await.stringify();
+}
+
+#[tauri::command]
+#[specta::specta]
+async fn get_event(uuid: &str) -> StrResult<model::Event> {
+    return file::get_event(uuid).await.stringify();
 }
